@@ -1,20 +1,20 @@
 package controller;
 
+import controller.user.AdministratorController;
+import controller.user.EmployeeController;
 import model.User;
-import model.validation.Notification;
+import service.validation.Notification;
 import repository.user.AuthenticationException;
 import service.user.AuthenticationService;
-import view.AdministratorView;
-import view.EmployeeView;
+import view.user.AdministratorView;
+import view.user.EmployeeView;
 import view.LoginView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.UnsupportedEncodingException;
 
-/**
- * Created by Alex on 18/03/2017.
- */
 public class LoginController {
     private final LoginView loginView;
     private final AuthenticationService authenticationService;
@@ -46,10 +46,11 @@ public class LoginController {
                 } else {
                     JOptionPane.showMessageDialog(loginView.getContentPane(), "Login successful!");
                     if((loginNotification.getResult().getRoles().get(0).getRole().equals("employee"))) {
-                        new EmployeeController(authenticationService, username, new EmployeeView());
+                        new EmployeeController(username, new EmployeeView());
                     } else {
-                        new AdministratorController(authenticationService, new AdministratorView());
+                        new AdministratorController(username, new AdministratorView());
                     }
+                    loginView.dispose();
                 }
             }
         }
@@ -62,7 +63,12 @@ public class LoginController {
             String username = loginView.getUsername();
             String password = loginView.getPassword();
 
-            Notification<Boolean> registerNotification = authenticationService.register(username, password);
+            Notification<Boolean> registerNotification = null;
+            try {
+                registerNotification = authenticationService.register(username, password);
+            } catch (UnsupportedEncodingException unsupportedEncodingException) {
+                unsupportedEncodingException.printStackTrace();
+            }
             if (registerNotification.hasErrors()) {
                 JOptionPane.showMessageDialog(loginView.getContentPane(), registerNotification.getFormattedErrors());
             } else {

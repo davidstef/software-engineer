@@ -2,13 +2,14 @@ package view.employee;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 import static javax.swing.BoxLayout.Y_AXIS;
 
 public class DeleteEmployeeView extends JFrame{
 
-    private JTextField txtUsername;
-    private JTextField txtPassword;
+    private JTextField txtId;
+
 
     private JButton btnDelete;
     private JButton btnBack;
@@ -18,8 +19,7 @@ public class DeleteEmployeeView extends JFrame{
         setLocationRelativeTo(null);
         initializeFields();
         setLayout(new BoxLayout(getContentPane(), Y_AXIS));
-        add(txtUsername);
-        add(txtPassword);
+        add(txtId);
         add(btnDelete);
         add(btnBack);
 
@@ -28,42 +28,33 @@ public class DeleteEmployeeView extends JFrame{
     }
 
     private void initializeFields() {
-        txtUsername = new JTextField("Type Username");
-        txtPassword = new JTextField("Type Password");
+        txtId = new JTextField("Type User ID");
 
         btnDelete = new JButton("Delete");
         btnBack = new JButton("<-");
     }
 
-    public JTextField getTxtUsername() {
-        return txtUsername;
+    public JTextField getTxtId() {
+        return txtId;
     }
 
-    public void setTxtUsername(JTextField txtUsername) {
-        this.txtUsername = txtUsername;
-    }
-
-    public JTextField getTxtPassword() {
-        return txtPassword;
-    }
-
-    public void setTxtPassword(JTextField txtPassword) {
-        this.txtPassword = txtPassword;
+    public void setTxtId(JTextField txtId) {
+        this.txtId = txtId;
     }
 
     public JButton getBtnDelete() {
         return btnDelete;
     }
 
-    public void setBtnDelete(JButton btnDelete) {
-        this.btnDelete = btnDelete;
+    public void setBtnDelete(ActionListener btn) {
+        this.btnDelete.addActionListener(btn);
     }
 
     public JButton getBtnBack() {
         return btnBack;
     }
 
-    public void setBtnBack(JButton btnBack) {
-        this.btnBack = btnBack;
+    public void setBtnBack(ActionListener btn) {
+        this.btnBack.addActionListener(btn);
     }
 }

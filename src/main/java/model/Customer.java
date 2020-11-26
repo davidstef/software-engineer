@@ -7,19 +7,19 @@ import java.util.Date;
  */
 public class Customer {
 
-    private Long CNP;
+    private String CNP;
 
     private String name;
     private Long ICN;
     private String adress;
-    private Long phoneNumber;
+    private String phoneNumber;
     private String email;
 
-    public Long getCnp() {
+    public String getCnp() {
         return CNP;
     }
 
-    public void setCnp(Long CNP) {
+    public void setCnp(String CNP) {
         this.CNP = CNP;
     }
 
@@ -47,11 +47,11 @@ public class Customer {
         this.adress = adress;
     }
 
-    public Long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(Long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

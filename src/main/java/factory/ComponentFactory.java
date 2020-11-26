@@ -5,6 +5,8 @@ import repository.account.AccountRepository;
 import repository.account.AccountRepositoryMySQL;
 import repository.customer.CustomerRepository;
 import repository.customer.CustomerRepositoryMySQL;
+import repository.report.ReportRepository;
+import repository.report.ReportRepositoryMySQL;
 import repository.security.RightsRolesRepository;
 import repository.security.RightsRolesRepositoryMySQL;
 import repository.transaction.TransactionRepository;
@@ -15,6 +17,8 @@ import service.account.AccountService;
 import service.account.AccountServiceImpl;
 import service.customer.CustomerService;
 import service.customer.CustomerServiceImpl;
+import service.report.ReportService;
+import service.report.ReportServiceImpl;
 import service.transaction.TransactionService;
 import service.transaction.TransactionServiceImpl;
 import service.user.AuthenticationService;
@@ -30,16 +34,18 @@ import java.sql.Connection;
 public class ComponentFactory {
 
     private final AuthenticationService authenticationService;
-    private final AccountService accountService; ///////
+    private final AccountService accountService;
     private final CustomerService customerService;
     private final TransactionService transactionService;
     private final UserService userService;
+    private final ReportService reportService;
 
     private final UserRepository userRepository;
     private final RightsRolesRepository rightsRolesRepository;
-    private final AccountRepository accountRepository; ////////
+    private final AccountRepository accountRepository;
     private final CustomerRepository customerRepository;
     private final TransactionRepository transactionRepository;
+    private final ReportRepository reportRepository;
 
     private static ComponentFactory instance;
 
@@ -55,16 +61,17 @@ public class ComponentFactory {
         this.rightsRolesRepository = new RightsRolesRepositoryMySQL(connection);
         this.userRepository = new UserRepositoryMySQL(connection, rightsRolesRepository);
         this.authenticationService = new AuthenticationServiceMySQL(this.userRepository, this.rightsRolesRepository);
-        this.userService = new UserServiceImpl(userRepository);
+        this.userService = new UserServiceImpl(userRepository, rightsRolesRepository);
 
-        this.accountRepository = new AccountRepositoryMySQL(connection);///////////
-        this.accountService = new AccountServiceImpl(this.accountRepository);////////
-        this.customerRepository = new CustomerRepositoryMySQL(connection);///////
-        this.customerService = new CustomerServiceImpl(this.customerRepository);//////
+        this.accountRepository = new AccountRepositoryMySQL(connection);
+        this.accountService = new AccountServiceImpl(this.accountRepository);
+        this.customerRepository = new CustomerRepositoryMySQL(connection);
+        this.customerService = new CustomerServiceImpl(this.customerRepository);
         this.transactionRepository = new TransactionRepositoryMySQL(connection);
         this.transactionService = new TransactionServiceImpl(transactionRepository);
 
-
+        this.reportRepository = new ReportRepositoryMySQL(connection);
+        this.reportService = new ReportServiceImpl(reportRepository);
 
     }
 
@@ -82,19 +89,19 @@ public class ComponentFactory {
 
     public AccountService getAccountService() {
         return accountService;
-    }///////////
+    }
 
     public AccountRepository getAccountRepository() {
         return accountRepository;
-    }///////////////
+    }
 
     public static ComponentFactory getInstance() {
         return instance;
     }
 
-    public CustomerService getCustomerService() { return customerService; }/////////////////
+    public CustomerService getCustomerService() { return customerService; }
 
-    public CustomerRepository getCustomerRepository() { return customerRepository; }///////////////
+    public CustomerRepository getCustomerRepository() { return customerRepository; }
 
     public TransactionService getTransactionService() {
         return transactionService;
@@ -106,5 +113,9 @@ public class ComponentFactory {
 
     public TransactionRepository getTransactionRepository() {
         return transactionRepository;
+    }
+
+    public ReportService getReportService() {
+        return reportService;
     }
 }

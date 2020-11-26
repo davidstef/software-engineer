@@ -19,15 +19,17 @@ public class Constants {
 
     public static class Tables {
         public static final String ACCOUNT = "repository_account";
+        public static final String SALT = "repository_salt";
         public static final String CUSTOMER = "repository_customer";
         public static final String TRANSACTION = "repository_transaction";
+        public static final String REPORT = "repository_report";
         public static final String USER = "user";
         public static final String ROLE = "role";
         public static final String RIGHT = "right";
         public static final String ROLE_RIGHT = "role_right";
         public static final String USER_ROLE = "user_role";
 
-        public static final String[] ORDERED_TABLES_FOR_CREATION = new String[]{USER, ROLE, RIGHT, ROLE_RIGHT, USER_ROLE, CUSTOMER, ACCOUNT, TRANSACTION};
+        public static final String[] ORDERED_TABLES_FOR_CREATION = new String[]{USER, ROLE, RIGHT, ROLE_RIGHT, USER_ROLE, CUSTOMER, ACCOUNT, SALT, TRANSACTION, REPORT};
     }
 
     public static class Roles {

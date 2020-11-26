@@ -21,7 +21,7 @@ public class CustomerRepositoryMock implements CustomerRepository {
         return customers;
     }
 
-    public Customer findByCnp(Long cnp) throws EntityNotFoundException {
+    public Customer findByCnp(String cnp) throws EntityNotFoundException {
         List<Customer> filteredCustomers = customers.parallelStream()
                 .filter(it -> it.getCnp().equals(cnp))
                 .collect(Collectors.toList());
@@ -36,7 +36,7 @@ public class CustomerRepositoryMock implements CustomerRepository {
     }
 
     @Override
-    public boolean update(Customer customer, Long cnp) {
+    public boolean update(Customer customer, String cnp) {
         List<Customer> filteredCustomers = customers.parallelStream()
                 .filter(it -> it.getCnp().equals(cnp))
                 .collect(Collectors.toList());
@@ -48,8 +48,13 @@ public class CustomerRepositoryMock implements CustomerRepository {
     }
 
     @Override
-    public boolean remove(Long cnp) {
+    public boolean remove(String cnp) {
         return customers.removeIf(customer -> customer.getCnp().equals(cnp));
+    }
+
+    @Override
+    public void removeAll() {
+        customers.clear();
     }
 
 

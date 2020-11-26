@@ -60,7 +60,7 @@ public class AccountRepositoryMySQL implements AccountRepository {
         try {
             PreparedStatement insertStatement = connection
                     .prepareStatement("INSERT INTO repository_account values (null, ?, ?, ?, ?)");
-            insertStatement.setLong(4, account.getCustomerCnp());
+            insertStatement.setString(4, account.getCustomerCnp());
             insertStatement.setString(1, account.getType());
             insertStatement.setDate(3, new Date(account.getDateOfCreation().getTime()));
             insertStatement.setDouble(2, account.getAmountOfMoney());
@@ -78,7 +78,7 @@ public class AccountRepositoryMySQL implements AccountRepository {
             PreparedStatement updateStatement = connection
                     .prepareStatement("UPDATE repository_account set customer_CNP=?, repository_account.type=?," +
                             " amount_of_money=?, date_of_creation=? where id=?");
-            updateStatement.setLong(1, account.getCustomerCnp());
+            updateStatement.setString(1, account.getCustomerCnp());
             updateStatement.setString(2, account.getType());
             updateStatement.setDate(4, new Date(account.getDateOfCreation().getTime()));
             updateStatement.setDouble(3, account.getAmountOfMoney());
@@ -105,10 +105,21 @@ public class AccountRepositoryMySQL implements AccountRepository {
         }
     }
 
+    @Override
+    public void removeAll() {
+        try {
+            Statement statement = connection.createStatement();
+            String sql = "DELETE from repository_account where id >= 0";
+            statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private Account getAccountFromResultSet(ResultSet rs) throws SQLException {
         return new AccountBuilder()
                 .setId(rs.getLong("id"))
-                .setCustomerCnp(rs.getLong("customer_CNP"))
+                .setCustomerCnp(rs.getString("customer_CNP"))
                 .setType(rs.getString("type"))
                 .setDateOfCreation(new Date(rs.getDate("date_of_creation").getTime()))
                 .setAmountOfMoney(rs.getDouble("amount_of_money"))

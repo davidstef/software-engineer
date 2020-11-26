@@ -14,7 +14,7 @@ public class DeleteAccountView extends JFrame {
 
 
     public DeleteAccountView() throws HeadlessException {
-        setSize(250, 500);
+        setSize(250, 200);
         setLocationRelativeTo(null);
         initializeFields();
         setLayout(new BoxLayout(getContentPane(), Y_AXIS));

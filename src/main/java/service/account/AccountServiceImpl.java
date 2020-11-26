@@ -1,12 +1,12 @@
 package service.account;
 
 import model.Account;
-import model.Customer;
+import service.validation.AccountValidator;
+import service.validation.Notification;
 import repository.EntityNotFoundException;
 import repository.account.AccountRepository;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 /**
@@ -31,32 +31,37 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean save(Account account) {
-        return repository.save(account);
+    public Notification<Boolean> save(Account account) {
+        AccountValidator accountValidator = new AccountValidator(account);
+        boolean accountValid = accountValidator.validate();
+        Notification<Boolean> accountAddNotification = new Notification<>();
+        if(!accountValid) {
+            accountValidator.getErrors().forEach(accountAddNotification::addError);
+            accountAddNotification.setResult(Boolean.FALSE);
+        } else {
+            accountAddNotification.setResult(repository.save(account));
+        }
+        return accountAddNotification;
     }
 
     @Override
-    public boolean update(Account account, Long id) {
-        return repository.update(account, id);
+    public Notification<Boolean> update(Account account, Long id) {
+        account.setId(id);
+        AccountValidator accountValidator = new AccountValidator(account);
+        boolean accountValid = accountValidator.validate();
+        Notification<Boolean> accountUpdateNotification = new Notification<>();
+        if(!accountValid) {
+            accountValidator.getErrors().forEach(accountUpdateNotification::addError);
+            accountUpdateNotification.setResult(Boolean.FALSE);
+        } else {
+            accountUpdateNotification.setResult(repository.update(account, id));
+        }
+        return accountUpdateNotification;
     }
 
     @Override
     public boolean remove(Long id) {
         return repository.remove(id);
-    }
-
-    @Override
-    public int getAccountSeniority(Long id) throws EntityNotFoundException {
-        Account account = findById(id);
-        Date publishedDate = account.getDateOfCreation();
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(publishedDate);
-        int yearOfPublishing = calendar.get(Calendar.YEAR);
-        calendar.setTime(new Date());
-        int yearToday = calendar.get(Calendar.YEAR);
-
-        return yearToday - yearOfPublishing;
     }
 
 

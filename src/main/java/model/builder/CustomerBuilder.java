@@ -15,7 +15,7 @@ public class CustomerBuilder {
         customer = new Customer();
     }
 
-    public CustomerBuilder setCnp(Long cnp) {
+    public CustomerBuilder setCnp(String cnp) {
         customer.setCnp(cnp);
         return this;
     }
@@ -40,7 +40,7 @@ public class CustomerBuilder {
         return this;
     }
 
-    public CustomerBuilder setPhoneNumber(Long phoneNumber) {
+    public CustomerBuilder setPhoneNumber(String phoneNumber) {
         customer.setPhoneNumber(phoneNumber);
         return this;
     }

@@ -1,0 +1,7 @@
+Moment time: 4 -> The employee david@gmail.com performed the operation: UPDATE Customer
+Moment time: 5 -> The employee david@gmail.com performed the operation: VIEW Account
+Moment time: 6 -> The employee david@gmail.com performed the operation: VIEW Customer
+Moment time: 7 -> The employee david@gmail.com performed the operation: ADD Account
+Moment time: 8 -> The employee david@gmail.com performed the operation: DELETE Account
+Moment time: 9 -> The employee david@gmail.com performed the operation: VIEW Account
+Moment time: 10 -> The employee david@gmail.com performed the operation: ADD Account

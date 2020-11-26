@@ -35,7 +35,7 @@ public class CustomerRepositoryMySQL implements CustomerRepository {
     }
 
     @Override
-    public Customer findByCnp(Long cnp) throws EntityNotFoundException {
+    public Customer findByCnp(String cnp) throws EntityNotFoundException {
         try {
             Statement statement = connection.createStatement();
             String sql = "Select * from repository_customer where cnp=" + cnp;
@@ -57,22 +57,22 @@ public class CustomerRepositoryMySQL implements CustomerRepository {
         try {
             PreparedStatement insertStatement = connection
                     .prepareStatement("INSERT INTO repository_customer values (?, ?, ?, ?, ?, ?)");
-            insertStatement.setLong(1, customer.getCnp());
+            insertStatement.setString(1, customer.getCnp());
             insertStatement.setString(2, customer.getName());
             insertStatement.setLong(3, customer.getIcn());
             insertStatement.setString(4, customer.getAdress());
-            insertStatement.setLong(5, customer.getPhoneNumber());
+            insertStatement.setString(5, customer.getPhoneNumber());
             insertStatement.setString(6, customer.getEmail());
             insertStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("The customer already exists.");
             return false;
         }
     }
 
     @Override
-    public boolean update(Customer customer, Long cnp) {
+    public boolean update(Customer customer, String cnp) {
         try {
             PreparedStatement updateStatement = connection
                     .prepareStatement("UPDATE repository_customer set repository_customer.name=?," +
@@ -80,9 +80,9 @@ public class CustomerRepositoryMySQL implements CustomerRepository {
             updateStatement.setString(1, customer.getName());
             updateStatement.setLong(2, customer.getIcn());
             updateStatement.setString(3, customer.getAdress());
-            updateStatement.setLong(4, customer.getPhoneNumber());
+            updateStatement.setString(4, customer.getPhoneNumber());
             updateStatement.setString(5, customer.getEmail());
-            updateStatement.setLong(6, cnp);
+            updateStatement.setString(6, cnp);
             updateStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -92,11 +92,11 @@ public class CustomerRepositoryMySQL implements CustomerRepository {
     }
 
     @Override
-    public boolean remove(Long cnp) {
+    public boolean remove(String cnp) {
         try {
             PreparedStatement deleteStatement = connection
                     .prepareStatement("DELETE from repository_customer where cnp = ?");
-            deleteStatement.setLong(1, cnp);
+            deleteStatement.setString(1, cnp);
             deleteStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -105,13 +105,24 @@ public class CustomerRepositoryMySQL implements CustomerRepository {
         }
     }
 
+    @Override
+    public void removeAll() {
+        try {
+            Statement statement = connection.createStatement();
+            String sql = "DELETE from repository_customer where cnp >= 0";
+            statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private Customer getCustomerFromResultSet(ResultSet rs) throws SQLException {
         return new CustomerBuilder()
-                .setCnp(rs.getLong("CNP"))
+                .setCnp(rs.getString("CNP"))
                 .setName(rs.getString("name"))
                 .setIcn(rs.getLong("ICN"))
                 .setAdress(rs.getString("adress"))
-                .setPhoneNumber(rs.getLong("phone_number"))
+                .setPhoneNumber(rs.getString("phone_number"))
                 .setEmail(rs.getString("email"))
                 .build();
     }

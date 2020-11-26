@@ -1,9 +1,10 @@
 package service.account;
 
 import model.Account;
-import model.Customer;
+import service.validation.Notification;
 import repository.EntityNotFoundException;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 /**
@@ -15,12 +16,10 @@ public interface AccountService {
 
     Account findById(Long id) throws EntityNotFoundException;
 
-    boolean save(Account account) throws EntityNotFoundException;
+    Notification<Boolean> save(Account account) throws EntityNotFoundException;
 
-    boolean update(Account account, Long id) throws EntityNotFoundException;
+    Notification<Boolean> update(Account account, Long id) throws EntityNotFoundException;
 
     boolean remove(Long id) throws EntityNotFoundException;
-
-    int getAccountSeniority(Long id) throws EntityNotFoundException;
 
 }

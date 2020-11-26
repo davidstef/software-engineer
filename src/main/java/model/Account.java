@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -12,7 +13,7 @@ public class Account {
     private String type;
     private Double amountOfMoney;
     private Date dateOfCreation;
-    private Long customerCNP;
+    private String customerCNP;
 
     public Long getId() {
         return id;
@@ -46,11 +47,11 @@ public class Account {
         this.dateOfCreation = dateOfCreation;
     }
 
-    public Long getCustomerCnp() {
+    public String getCustomerCnp() {
         return customerCNP;
     }
 
-    public void setCustomerCnp(Long customerCNP) {
+    public void setCustomerCnp(String customerCNP) {
         this.customerCNP = customerCNP;
     }
 }

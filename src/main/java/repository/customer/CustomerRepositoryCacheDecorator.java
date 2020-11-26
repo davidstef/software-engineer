@@ -4,6 +4,8 @@ import model.Customer;
 import repository.Cache;
 import repository.EntityNotFoundException;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 public class CustomerRepositoryCacheDecorator extends CustomerRepositoryDecorator {
@@ -26,28 +28,32 @@ public class CustomerRepositoryCacheDecorator extends CustomerRepositoryDecorato
     }
 
     @Override
-    public Customer findByCnp(Long cnp) throws EntityNotFoundException {
+    public Customer findByCnp(String cnp) throws EntityNotFoundException {
         return decoratedRepository.findByCnp(cnp);
     }
 
     @Override
-    public boolean save(Customer customer) {
+    public boolean save(Customer customer) throws SQLException {
         cache.invalidateCache();
         return decoratedRepository.save(customer);
     }
 
     @Override
-    public boolean update(Customer customer, Long cnp) {
+    public boolean update(Customer customer, String cnp) {
         cache.invalidateCache();
         return decoratedRepository.update(customer, cnp);
     }
 
     @Override
-    public boolean remove(Long id) {
+    public boolean remove(String id) {
         cache.invalidateCache();
         return decoratedRepository.remove(id);
     }
 
+    @Override
+    public void removeAll() {
+        decoratedRepository.removeAll();
+    }
 
 
 }

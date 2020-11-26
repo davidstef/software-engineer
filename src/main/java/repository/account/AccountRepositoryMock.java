@@ -66,4 +66,9 @@ public class AccountRepositoryMock implements AccountRepository {
     public boolean remove(Long id) {
         return accounts.removeIf(acc -> acc.getId().equals(id));
     }
+
+    @Override
+    public void removeAll() {
+        accounts.clear();
+    }
 }

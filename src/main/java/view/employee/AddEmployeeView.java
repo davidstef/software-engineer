@@ -2,6 +2,7 @@ package view.employee;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 import static javax.swing.BoxLayout.Y_AXIS;
 
@@ -55,15 +56,15 @@ public class AddEmployeeView extends JFrame {
         return btnAdd;
     }
 
-    public void setBtnAdd(JButton btnAdd) {
-        this.btnAdd = btnAdd;
+    public void setBtnAdd(ActionListener button) {
+        this.btnAdd.addActionListener(button);
     }
 
     public JButton getBtnBack() {
         return btnBack;
     }
 
-    public void setBtnBack(JButton btnBack) {
-        this.btnBack = btnBack;
+    public void setBtnBack(ActionListener button) {
+        this.btnBack.addActionListener(button);
     }
 }

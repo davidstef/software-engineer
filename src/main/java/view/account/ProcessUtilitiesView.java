@@ -10,7 +10,6 @@ public class ProcessUtilitiesView extends JFrame {
 
     private JButton btnProcess;
     private JButton btnBack;
-    private JTextField txtUsername;
     private JTextField txtPayerName;
     private JTextField txtIdAccount1;
     private JTextField txtRecipientName;
@@ -21,7 +20,6 @@ public class ProcessUtilitiesView extends JFrame {
         setLocationRelativeTo(null);
         initializeFields();
         setLayout(new BoxLayout(getContentPane(), Y_AXIS));
-        add(txtUsername);
         add(txtPayerName);
         add(txtIdAccount1);
         add(txtRecipientName);
@@ -34,7 +32,6 @@ public class ProcessUtilitiesView extends JFrame {
     }
 
     private void initializeFields() {
-        txtUsername = new JTextField("Type your username");
         txtPayerName = new JTextField("Type payer account name");
         txtIdAccount1 = new JTextField("Type payer account ID");
         txtRecipientName = new JTextField("Type recipient account name");
@@ -56,16 +53,8 @@ public class ProcessUtilitiesView extends JFrame {
         return btnBack;
     }
 
-    public void setBtnBack(JButton btnBack) {
-        this.btnBack = btnBack;
-    }
-
-    public JTextField getTxtUsername() {
-        return txtUsername;
-    }
-
-    public void setTxtUsername(JTextField txtUsername) {
-        this.txtUsername = txtUsername;
+    public void setBtnBack(ActionListener button) {
+        this.btnBack.addActionListener(button);
     }
 
     public JTextField getTxtPayerName() {

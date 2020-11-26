@@ -3,6 +3,7 @@ package repository.account;
 import model.Account;
 import repository.EntityNotFoundException;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 /**
@@ -19,5 +20,7 @@ public interface AccountRepository {
     boolean update(Account account, Long id);
 
     boolean remove(Long id);
+
+    void removeAll();
 
 }

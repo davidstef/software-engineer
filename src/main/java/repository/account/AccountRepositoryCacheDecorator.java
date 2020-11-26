@@ -50,4 +50,9 @@ public class AccountRepositoryCacheDecorator extends AccountRepositoryDecorator 
         cache.invalidateCache();
         return decoratedRepository.remove(id);
     }
+
+    @Override
+    public void removeAll() {
+        decoratedRepository.removeAll();
+    }
 }

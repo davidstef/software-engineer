@@ -1,8 +1,6 @@
 package model.builder;
 
 import model.Account;
-import model.Customer;
-
 import java.util.Date;
 
 /**
@@ -36,7 +34,7 @@ public class AccountBuilder {
         return this;
     }
 
-    public AccountBuilder setCustomerCnp(Long cnp) {
+    public AccountBuilder setCustomerCnp(String cnp) {
         account.setCustomerCnp(cnp);
         return this;
     }

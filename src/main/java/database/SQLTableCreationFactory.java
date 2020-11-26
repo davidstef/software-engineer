@@ -20,14 +20,14 @@ public class SQLTableCreationFactory {
 
             case CUSTOMER:
                 return "CREATE TABLE IF NOT EXISTS repository_customer (" +
-                        "  CNP int(13) NOT NULL," +
+                        "  CNP varchar(50) NOT NULL," +
                         "  name varchar(500) NOT NULL," +
                         "  ICN int(15) NOT NULL," +
                         "  adress varchar(500) NOT NULL," +
-                        "  phone_number int(11) NOT NULL," +
+                        "  phone_number varchar(50) NOT NULL," +
                         "  email varchar(200) NOT NULL," +
                         "  PRIMARY KEY (CNP)," +
-                        "  UNIQUE KEY id_UNIQUE (CNP)" +
+                        "  UNIQUE KEY cnp_UNIQUE (CNP)" +
                         ");";
 
             case ACCOUNT:
@@ -36,11 +36,26 @@ public class SQLTableCreationFactory {
                         "  type varchar(500) NOT NULL," +
                         "  amount_of_money double(10, 2) NOT NULL," +
                         "  date_of_creation datetime DEFAULT NULL," +
-                        "  customer_CNP int(13) NOT NULL," +
+                        "  customer_CNP varchar(50) NOT NULL," +
                         "  PRIMARY KEY (id)," +
-                        "  UNIQUE KEY id_UNIQUE (id)" +
+                        "  UNIQUE KEY id_UNIQUE (id)," +
+                        "  CONSTRAINT repository_account_fk1" +
+                        "    FOREIGN KEY (customer_CNP)" +
+                        "    REFERENCES repository_customer (CNP)" +
+                        "    ON DELETE CASCADE" +
+                        "    ON UPDATE CASCADE" +
+                        ") ENGINE=InnoDB AUTO_INCREMENT=0";
 
-                        ") ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
+            case SALT:
+                return "CREATE TABLE IF NOT EXISTS repository_salt (" +
+                    "  user_id int(11) NOT NULL," +
+                    "  salt varchar(500) NOT NULL," +
+                    "  CONSTRAINT salt_fk" +
+                    "    FOREIGN KEY (user_id)" +
+                    "    REFERENCES user (id)" +
+                    "    ON DELETE CASCADE" +
+                    "    ON UPDATE CASCADE" +
+                    ");";
 
             case TRANSACTION:
                 return "CREATE TABLE IF NOT EXISTS repository_transaction (" +
@@ -50,6 +65,20 @@ public class SQLTableCreationFactory {
                         "  recipient_account varchar(300) NOT NULL," +
                         "  amount double(10,2) NOT NULL" +
                         ");";
+
+            case REPORT:
+                return "CREATE TABLE IF NOT EXISTS repository_report (" +
+                        "  id int(15) NOT NULL AUTO_INCREMENT," +
+                        "  username varchar(500) NOT NULL," +
+                        "  operation varchar(300) NOT NULL," +
+                        "  UNIQUE KEY id_UNIQUE (id)," +
+                        "  CONSTRAINT repository_report_fk1" +
+                        "    FOREIGN KEY (username)" +
+                        "    REFERENCES user (username)" +
+                        "    ON DELETE CASCADE" +
+                        "    ON UPDATE CASCADE" +
+                        ") ENGINE=InnoDB AUTO_INCREMENT=1";
+
             case ROLE:
                 return "  CREATE TABLE IF NOT EXISTS role (" +
                         "  id INT NOT NULL AUTO_INCREMENT," +

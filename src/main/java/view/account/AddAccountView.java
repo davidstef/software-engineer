@@ -12,7 +12,6 @@ public class AddAccountView extends JFrame{
     private JButton btnBack;
     private JTextField txtCustomerCnp;
     private JTextField txtType;
-    private JTextField txtDate;
     private JTextField txtAmountOfMoney;
 
     public AddAccountView() throws HeadlessException {
@@ -22,7 +21,6 @@ public class AddAccountView extends JFrame{
         setLayout(new BoxLayout(getContentPane(), Y_AXIS));
         add(txtCustomerCnp);
         add(txtType);
-        add(txtDate);
         add(txtAmountOfMoney);
         add(btnAdd);
         add(btnBack);
@@ -33,8 +31,7 @@ public class AddAccountView extends JFrame{
 
     private void initializeFields() {
         txtCustomerCnp = new JTextField("Type Customer Cnp");
-        txtType = new JTextField("Type the type");
-        txtDate = new JTextField("Type creation Date");
+        txtType = new JTextField("Choose one account type: CURRENT/SAVINGS");
         txtAmountOfMoney = new JTextField("Type amount of money");
 
         btnAdd = new JButton("Add");
@@ -57,10 +54,6 @@ public class AddAccountView extends JFrame{
         this.txtType = txtType;
     }
 
-    public void setTxtDate(JTextField txtDate) {
-        this.txtDate = txtDate;
-    }
-
     public void setTxtAmountOfMoney(JTextField txtAmountOfMoney) {
         this.txtAmountOfMoney = txtAmountOfMoney;
     }
@@ -81,13 +74,8 @@ public class AddAccountView extends JFrame{
         return txtType;
     }
 
-    public JTextField getTxtDate() {
-        return txtDate;
-    }
-
     public JTextField getTxtAmountOfMoney() {
         return txtAmountOfMoney;
     }
-
 
 }

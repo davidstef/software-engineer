@@ -3,16 +3,18 @@ package service.user;
 import model.Role;
 import model.User;
 import model.builder.UserBuilder;
-import model.validation.Notification;
-import model.validation.UserValidator;
+import service.validation.Notification;
+import service.validation.UserValidator;
 import repository.security.RightsRolesRepository;
 import repository.user.AuthenticationException;
 import repository.user.UserRepository;
 
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Collections;
 
+import static database.Constants.Roles.ADMINISTRATOR;
 import static database.Constants.Roles.EMPLOYEE;
 
 /**
@@ -29,8 +31,8 @@ public class AuthenticationServiceMySQL implements AuthenticationService {
     }
 
     @Override
-    public Notification<Boolean> register(String username, String password) {
-        Role customerRole = rightsRolesRepository.findRoleByTitle(EMPLOYEE);
+    public Notification<Boolean> register(String username, String password) throws UnsupportedEncodingException {
+        Role customerRole = rightsRolesRepository.findRoleByTitle(ADMINISTRATOR);
         User user = new UserBuilder()
                 .setUsername(username)
                 .setPassword(password)
@@ -45,15 +47,20 @@ public class AuthenticationServiceMySQL implements AuthenticationService {
             userValidator.getErrors().forEach(userRegisterNotification::addError);
             userRegisterNotification.setResult(Boolean.FALSE);
         } else {
-            user.setPassword(encodePassword(password));
-            userRegisterNotification.setResult(userRepository.save(user));
+            SecureRandom random = new SecureRandom();
+            byte[] salt = new byte[16];
+            random.nextBytes(salt);
+            String stringSalt = salt.toString();
+
+            user.setPassword(encodePassword(password, stringSalt));
+            userRegisterNotification.setResult(userRepository.save(user, stringSalt));
         }
         return userRegisterNotification;
     }
 
     @Override
     public Notification<User> login(String username, String password) throws AuthenticationException {
-        return userRepository.findByUsernameAndPassword(username, encodePassword(password));
+        return userRepository.findByUsernameAndPassword(username, encodePassword(password, findSaltByUsername(username)));
     }
 
     @Override
@@ -61,19 +68,24 @@ public class AuthenticationServiceMySQL implements AuthenticationService {
         return false;
     }
 
-    private String encodePassword(String password) {
+    @Override
+    public String findSaltByUsername(String username)  {
         try {
-            SecureRandom random = new SecureRandom();
-            byte[] salt = new byte[16];
-            random.nextBytes(salt);
+            return userRepository.findSaltByUsername(username);
+        } catch (AuthenticationException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
+    private String encodePassword(String password, String stringSalt) {
+        try {
+            byte[] salt = stringSalt.getBytes("UTF-8");
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-
             digest.update(salt);
 
-
             byte[] hash = digest.digest(password.getBytes("UTF-8"));
-            System.out.println("Hash: " + hash);
+
             StringBuilder hexString = new StringBuilder();
 
             for (int i = 0; i < hash.length; i++) {
