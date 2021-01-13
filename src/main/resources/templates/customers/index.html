@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+
+<head th:replace="fragments :: head"></head>
+
+<body class="container">
+<header th:replace="fragments :: header"></header>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Customer Name</th>
+    </tr>
+    </thead>
+    <tr th:each="customer : ${customers}">
+        <td><a th:href="'/customers/detail?customerId=' + ${customer.id}" th:text="${customer.firstName} + ' ' + ${customer.lastName}"></a></td>
+    </tr>
+</table>
+
+</body>
+</html>

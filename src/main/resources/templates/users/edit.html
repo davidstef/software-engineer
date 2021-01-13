@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragmentsAdmin :: head"></head>
+
+<body class="container">
+
+<header th:replace="fragmentsAdmin :: header"></header>
+<form method="post" action="/users/edit">
+    <div class="form-group">
+        <th:block th:each="user : ${userIds}">
+            <label>
+                <span th:text="${user.email}"></span>
+                <input type="radio" name="userIds" th:value="${user.id}" class="form-control">
+            </label>
+        </th:block>
+    </div>
+
+    <div class="form-group">
+        <label>First Name
+            <input th:field="${user.firstName}" class="form-control">
+        </label>
+        <p class="error" th:errors="${user.firstName}"></p>
+    </div>
+
+    <div class="form-group">
+        <label>Last Name
+            <input th:field="${user.lastName}" class="form-control">
+        </label>
+        <p class="error" th:errors="${user.lastName}"></p>
+    </div>
+
+    <div class="form-group">
+        <label>E-mail
+            <input th:field="${user.email}" class="form-control">
+        </label>
+        <p class="error" th:errors="${user.email}"></p>
+    </div>
+
+    <div class="form-group">
+        <label>Password
+            <input type="password" th:field="${user.password}" class="form-control">
+        </label>
+        <p class="error" th:errors="${user.password}"></p>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Update" class="btn btn-success">
+    </div>
+
+</form>
+</body>
+</html>

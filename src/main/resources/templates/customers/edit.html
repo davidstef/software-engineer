@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+
+<body class="container">
+
+<header th:replace="fragments :: header"></header>
+<form method="post" action="/customers/edit">
+    <div class="form-group">
+        <th:block th:each="customer : ${customerIds}">
+            <label>
+                <span th:text="${customer.firstName} + ' ' + ${customer.lastName}"></span>
+                <input type="radio" name="customerIds" th:value="${customer.id}" class="form-control">
+            </label>
+        </th:block>
+    </div>
+
+    <div class="form-group">
+        <label>First Name
+            <input th:field="${customer.firstName}" class="form-control">
+        </label>
+        <p class="error" th:errors="${customer.firstName}"></p>
+    </div>
+
+    <div class="form-group">
+        <label>Last Name
+            <input th:field="${customer.lastName}" class="form-control">
+        </label>
+        <p class="error" th:errors="${customer.lastName}"></p>
+    </div>
+
+    <div class="form-group">
+        <label>CNP
+            <input th:field="${customer.customerDetails.cnp}" class="form-control">
+        </label>
+        <p class="error" th:errors="${customer.customerDetails.cnp}"></p>
+    </div>
+
+    <div class="form-group">
+        <label>Address
+            <input th:field="${customer.customerDetails.address}" class="form-control">
+        </label>
+        <p class="error" th:errors="${customer.customerDetails.address}"></p>
+    </div>
+
+    <div class="form-group">
+        <label>E-mail
+            <input th:field="${customer.customerDetails.email}" class="form-control">
+        </label>
+        <p class="error" th:errors="${customer.customerDetails.email}"></p>
+    </div>
+
+    <div class="form-group">
+        <label>Category
+            <select th:field="${customer.customerCategory}">
+                <option th:each="customerCategory : ${categories}"
+                        th:value="${customerCategory.id}"
+                        th:text="${customerCategory.name}"></option>
+            </select>
+            <p class="error" th:errors="${customer.customerCategory}"></p>
+        </label>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Update" class="btn btn-success">
+    </div>
+
+</form>
+</body>
+</html>
